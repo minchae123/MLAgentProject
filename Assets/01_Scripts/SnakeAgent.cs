@@ -97,4 +97,16 @@ public class SnakeAgent : Agent
 		base.Heuristic(actionsOut);
 	}
 
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.CompareTag("Good"))
+		{
+
+		}
+		else if (collision.CompareTag("Bad"))
+		{
+
+		}
+	}
 }
