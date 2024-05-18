@@ -9,18 +9,38 @@ public class ItemSpawner : MonoBehaviour
 
 	[SerializeField] private Transform initPos;
 
+	private List<GameObject> items = new List<GameObject>();
+
 	private void Start()
 	{
-		SpawnItem();
+		StartCoroutine(SpawnCoroutine());
 	}
 
-	private void Update()
+	private IEnumerator SpawnCoroutine()
 	{
-		if (Input.GetKeyDown(KeyCode.O))
+		while (true)
 		{
 			SpawnItem();
+			yield return new WaitForSeconds(5f);
 		}
 	}
+
+	public void ResetSpawn()
+	{
+		StopAllCoroutines();
+
+		if (items.Count > 0)
+		{
+			foreach (GameObject i in items)
+			{
+				Destroy(i);
+			}
+			items.Clear();
+
+		}
+		StartCoroutine(SpawnCoroutine());
+	}
+
 
 	public void SpawnItem()
 	{
@@ -30,13 +50,16 @@ public class ItemSpawner : MonoBehaviour
 
 		int r = Random.Range(0, 2);
 
-		if(r == 0)
+		if (r == 0)
 		{
-			Instantiate(goodItem, pos, Quaternion.identity);
+			GameObject o =  Instantiate(goodItem, pos, Quaternion.identity);
+			items.Add(o);
 		}
 		else
 		{
-			Instantiate(badItem, pos, Quaternion.identity);
+			GameObject o = Instantiate(badItem, pos, Quaternion.identity);
+			items.Add(o);
 		}
+
 	}
 }

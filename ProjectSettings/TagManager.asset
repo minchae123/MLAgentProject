@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Good
   - Bad
+  - Body
+  - Wall
   layers:
   - Default
   - TransparentFX
