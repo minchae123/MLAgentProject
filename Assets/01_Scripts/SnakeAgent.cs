@@ -22,7 +22,7 @@ public class SnakeAgent : Agent
 	public override void OnEpisodeBegin()
 	{
 		transform.localPosition = Vector3.zero;
-		snake.ResetSnake();
+		//snake.ResetSnake();
 		spawner.ResetSpawn();
 	}
 
@@ -77,9 +77,9 @@ public class SnakeAgent : Agent
 		if (collision.CompareTag("Good"))
 		{
 			AddReward(1f);
-			snake.GrowUp();
+			//snake.GrowUp();
 			Destroy(collision.gameObject);
-			EndEpisode();
+			//EndEpisode();
 		}
 		else if (collision.CompareTag("Bad"))
 		{

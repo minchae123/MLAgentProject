@@ -8,75 +8,40 @@ public class Snake : MonoBehaviour
 	public Vector2 moveDir = Vector2.right;
 
 	[SerializeField] Transform segmentprefab;
-	[SerializeField] private int spawnSegCountStart = 3;
+	[SerializeField] private int spawnSegCountStart = 4;
 	private List<Transform> segments = new List<Transform>();
 
 	private IEnumerator Start()
 	{
-		segments.Add(transform);
 		SetUp();
 
 		while (true)
 		{
+			//transform.position = (Vector2)transform.position + moveDir;
 			MovementSegment();
 
 			yield return StartCoroutine("WaitForSeconds", moveSpeed);
 		}
 	}
 
-	public void ChangeDir(Vector3 dir)
-	{
-		moveDir = dir;
-	}
-
-	public void ResetSnake()
-	{
-		/*if (segments.Count > 1)
-		{
-			foreach (var t in segments)
-			{
-				if(t == transform)
-					continue;
-
-				print(t);
-				Destroy(t.gameObject);
-				segments.Remove(t);
-			}
-		}*/
-		SetUp();
-	}
-
 	private void MovementSegment()
 	{
-		/*for (int i = segments.Count - 1; i > 0; --i)
+		for (int i = segments.Count - 1; i > 0; --i)
 		{
-			segments[i].position = segments[i - 1].position;
+			segments[i].localPosition = segments[i - 1].localPosition;
 		}
 
-		transform.position = (Vector2)transform.position + moveDir;*/
-
-		Vector3 previousLocalPosition = transform.localPosition;
-
-		transform.localPosition += (Vector3)moveDir * moveSpeed;
-
-		Vector3 moveVector = transform.localPosition - previousLocalPosition;
-
-		for (int i = 1; i < segments.Count; i++)
-		{
-		}
+		transform.localPosition = (Vector2)transform.localPosition + moveDir;
 	}
 
 	private void SetUp()
 	{
+		segments.Add(transform);
+
 		for (int i = 0; i < spawnSegCountStart; i++)
 		{
 			AddSegment();
 		}
-	}
-
-	public void GrowUp()
-	{
-		spawnSegCountStart++;
 	}
 
 	private void AddSegment()
@@ -84,6 +49,11 @@ public class Snake : MonoBehaviour
 		Transform seg = Instantiate(segmentprefab, transform);
 		seg.position = segments[segments.Count - 1].position;
 		segments.Add(seg);
+	}
+
+	public void ChangeDir(Vector3 dir)
+	{
+		moveDir = dir;
 	}
 
 	private IEnumerator WaitForSeconds(float time)
