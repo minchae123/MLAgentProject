@@ -13,16 +13,18 @@ public class SnakeAgent : Agent
 
 	public ItemSpawner spawner;
 
+	private Vector3 startPos;
+
 	public override void Initialize()
 	{
+		startPos = transform.localPosition;
 		snake = GetComponent<Snake>();
-		spawner = transform.parent.GetChild(2).GetComponent<ItemSpawner>();
+		spawner = transform.parent.GetChild(3).GetComponent<ItemSpawner>();
 	}
 
 	public override void OnEpisodeBegin()
 	{
-		transform.localPosition = Vector3.zero;
-		//snake.ResetSnake();
+		transform.localPosition = startPos;
 		spawner.ResetSpawn();
 	}
 
@@ -39,6 +41,7 @@ public class SnakeAgent : Agent
 
 		switch (DiscreateActions[0])
 		{
+			case 0: dir = snake.moveDir; break;
 			case 1: dir = Vector2.up; break;
 			case 2: dir = Vector2.down; break;
 			case 3: dir = Vector2.right; break;
@@ -77,7 +80,7 @@ public class SnakeAgent : Agent
 		if (collision.CompareTag("Good"))
 		{
 			AddReward(1f);
-			//snake.GrowUp();
+			snake.GrowUp(1);
 			Destroy(collision.gameObject);
 			//EndEpisode();
 		}
@@ -85,11 +88,13 @@ public class SnakeAgent : Agent
 		{
 			AddReward(-1f);
 			Destroy(collision.gameObject);
+			snake.ResetSegement();
 			EndEpisode();
 		}
-		else if(collision.CompareTag("Body") || collision.CompareTag("Wall"))
+		else if(collision.CompareTag("Wall"))
 		{
 			AddReward(-1f);
+			snake.ResetSegement();
 			EndEpisode();
 		}
 	}

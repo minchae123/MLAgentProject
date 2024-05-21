@@ -9,7 +9,12 @@ public class Snake : MonoBehaviour
 
 	[SerializeField] Transform segmentprefab;
 	[SerializeField] private int spawnSegCountStart = 4;
+	[SerializeField] private Transform parent;
+
 	private List<Transform> segments = new List<Transform>();
+
+	private bool isStart = false;
+
 
 	private IEnumerator Start()
 	{
@@ -17,8 +22,8 @@ public class Snake : MonoBehaviour
 
 		while (true)
 		{
-			//transform.position = (Vector2)transform.position + moveDir;
-			MovementSegment();
+			if(segments.Count > 0)
+				MovementSegment();
 
 			yield return StartCoroutine("WaitForSeconds", moveSpeed);
 		}
@@ -34,6 +39,7 @@ public class Snake : MonoBehaviour
 		transform.localPosition = (Vector2)transform.localPosition + moveDir;
 	}
 
+
 	private void SetUp()
 	{
 		segments.Add(transform);
@@ -44,17 +50,29 @@ public class Snake : MonoBehaviour
 		}
 	}
 
+	public void GrowUp(int c)
+	{
+		spawnSegCountStart += c;
+	}
+
+	public void ResetSegement()
+	{
+
+	}
+
 	private void AddSegment()
 	{
-		Transform seg = Instantiate(segmentprefab, transform);
-		seg.position = segments[segments.Count - 1].position;
+		Transform seg = Instantiate(segmentprefab, parent);
+		seg.localPosition = segments[segments.Count - 1].localPosition;
 		segments.Add(seg);
 	}
+
 
 	public void ChangeDir(Vector3 dir)
 	{
 		moveDir = dir;
 	}
+
 
 	private IEnumerator WaitForSeconds(float time)
 	{

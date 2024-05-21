@@ -53,11 +53,13 @@ public class ItemSpawner : MonoBehaviour
 		if (r == 0)
 		{
 			GameObject o =  Instantiate(goodItem, pos, Quaternion.identity);
+			o.transform.parent = transform;
 			items.Add(o);
 		}
 		else
 		{
 			GameObject o = Instantiate(badItem, pos, Quaternion.identity);
+			o.transform.parent = transform;
 			items.Add(o);
 		}
 
