@@ -50,7 +50,7 @@ public class SnakeAgent : Agent
 
 		snake.ChangeDir(dir);
 
-		AddReward(-0.01f);
+		AddReward(0.01f);
 	}
 
 	public override void Heuristic(in ActionBuffers actionsOut)
@@ -82,7 +82,7 @@ public class SnakeAgent : Agent
 			AddReward(1f);
 			snake.GrowUp(1);
 			Destroy(collision.gameObject);
-			//EndEpisode();
+			EndEpisode();
 		}
 		else if (collision.CompareTag("Bad"))
 		{
