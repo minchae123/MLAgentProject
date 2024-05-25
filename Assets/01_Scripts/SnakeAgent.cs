@@ -51,6 +51,7 @@ public class SnakeAgent : Agent
 		snake.ChangeDir(dir);
 
 		AddReward(0.01f);
+
 	}
 
 	public override void Heuristic(in ActionBuffers actionsOut)
