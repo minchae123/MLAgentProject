@@ -22,8 +22,7 @@ public class Snake : MonoBehaviour
 
 		while (true)
 		{
-			if(segments.Count > 0)
-				MovementSegment();
+			MovementSegment();
 
 			yield return StartCoroutine("WaitForSeconds", moveSpeed);
 		}
@@ -31,33 +30,18 @@ public class Snake : MonoBehaviour
 
 	private void MovementSegment()
 	{
-		for (int i = segments.Count - 1; i > 0; --i)
-		{
-			segments[i].localPosition = segments[i - 1].localPosition;
-		}
-
 		transform.localPosition = (Vector2)transform.localPosition + moveDir;
 	}
 
 
 	private void SetUp()
 	{
-		segments.Add(transform);
-
-		for (int i = 0; i < spawnSegCountStart; i++)
-		{
-			AddSegment();
-		}
+		
 	}
 
 	public void GrowUp(int c)
 	{
 		spawnSegCountStart += c;
-	}
-
-	public void ResetSegement()
-	{
-
 	}
 
 	private void AddSegment()
@@ -72,7 +56,6 @@ public class Snake : MonoBehaviour
 	{
 		moveDir = dir;
 	}
-
 
 	private IEnumerator WaitForSeconds(float time)
 	{

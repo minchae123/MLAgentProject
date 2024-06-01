@@ -55,13 +55,23 @@ public class ItemSpawner : MonoBehaviour
 			GameObject o =  Instantiate(goodItem, pos, Quaternion.identity);
 			o.transform.parent = transform;
 			items.Add(o);
+			
+			StartCoroutine(DestroyItem(o, 20));
 		}
 		else
 		{
 			GameObject o = Instantiate(badItem, pos, Quaternion.identity);
 			o.transform.parent = transform;
 			items.Add(o);
-		}
 
+			StartCoroutine(DestroyItem(o, 15));
+		}
+	}
+
+	IEnumerator DestroyItem(GameObject o, float se)
+	{
+		yield return new WaitForSeconds(se);
+		Destroy(o);
+		items.Remove(o);
 	}
 }

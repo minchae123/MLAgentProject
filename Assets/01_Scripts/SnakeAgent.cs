@@ -1,19 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SnakeAgent : Agent
 {
 	private Snake snake;
 
+	private int score = 0;
+
 	public ItemSpawner spawner;
 
 	private Vector3 startPos;
+
+	[SerializeField] private TextMeshPro scoreTxt;
 
 	public override void Initialize()
 	{
@@ -25,6 +31,8 @@ public class SnakeAgent : Agent
 	public override void OnEpisodeBegin()
 	{
 		transform.localPosition = startPos;
+		score = 0;
+		Text(score);
 		spawner.ResetSpawn();
 	}
 
@@ -50,8 +58,13 @@ public class SnakeAgent : Agent
 
 		snake.ChangeDir(dir);
 
-		AddReward(0.01f);
+		AddReward(0.0001f);
 
+	}
+
+	public void Text(int cnt)
+	{
+		scoreTxt.text = cnt.ToString();
 	}
 
 	public override void Heuristic(in ActionBuffers actionsOut)
@@ -81,21 +94,20 @@ public class SnakeAgent : Agent
 		if (collision.CompareTag("Good"))
 		{
 			AddReward(1f);
-			snake.GrowUp(1);
+			score++;
+			Text(score);
 			Destroy(collision.gameObject);
-			EndEpisode();
+			//EndEpisode();
 		}
 		else if (collision.CompareTag("Bad"))
 		{
 			AddReward(-1f);
 			Destroy(collision.gameObject);
-			snake.ResetSegement();
 			EndEpisode();
 		}
 		else if(collision.CompareTag("Wall"))
 		{
 			AddReward(-1f);
-			snake.ResetSegement();
 			EndEpisode();
 		}
 	}
